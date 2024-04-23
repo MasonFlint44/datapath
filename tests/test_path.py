@@ -192,35 +192,20 @@ def test_path_call_returns_optional_type(data: dict):
     ), f"Type check failed, output was:\n{result.stdout}"
 
 
-def test_path_call_with_default_value_returns_optional_type(data: dict):
-    # Python code to test using dedent for better formatting
-    code = dedent(
-        f"""
-        from datapath import Path
+def test_path_call_returns_default_none_with_optional(data: dict):
+    assert Path.foo.bar[2].baz(data, optional=int) is None
 
-        data = {data}
 
-        path = Path.foo.bar[2].baz(data, default=None, optional=int)
+def test_path_call_checks_type(data: dict):
+    with pytest.raises(TypeError):
+        Path.foo.bar[0].baz(data, type_=str)
 
-        reveal_type(path)
-        """
-    )
 
-    # Write the code to a temporary file
-    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".py") as tmp:
-        tmp.write(code)
-        tmp_file_name = tmp.name
+def test_path_call_checks_type_with_optional(data: dict):
+    with pytest.raises(TypeError):
+        Path.foo.bar[0].baz(data, optional=str)
 
-    # Run MyPy on the temporary file
-    result = subprocess.run(
-        ["mypy", "--show-error-codes", tmp_file_name],
-        text=True,
-        capture_output=True,
-        check=True,
-    )
 
-    # Check for specific output indicating the correct type
-    expected_output = 'note: Revealed type is "Union[builtins.int, None]"'
-    assert (
-        expected_output in result.stdout
-    ), f"Type check failed, output was:\n{result.stdout}"
+def test_path_call_does_not_check_type(data: dict):
+    assert Path.foo.bar[0].baz(data, type_=str, check_type=False) == 1  # type: ignore
+    assert Path.foo.bar[0].baz(data, optional=str, check_type=False) == 1  # type: ignore

@@ -32,19 +32,32 @@ class Path:
     @overload
     def __call__(self, data, *, default, type_: type[T]) -> T: ...
 
-    @overload
-    def __call__(self, data, *, default, optional: type[T]) -> T | None: ...
-
-    def __call__(self, data, *, default=unassigned, type_=Any, optional=None):
+    def __call__(
+        self, data, *, default=unassigned, type_=Any, optional=None, check_type=True
+    ):
         # Navigate through the data according to the path
         result = data
         for step in self.path:
             try:
+                # Try to access the key or index
                 result = result[step]
-            except (KeyError, IndexError, TypeError) as e:
+            except (KeyError, IndexError) as e:
+                # Return the default value if it is set
                 if default is not unassigned:
                     return default
+                # Return None if the optional type is set
+                if optional is not None:
+                    return None
+                # Raise an error if no default value is set
                 raise KeyError(f"Invalid path or index '{step}' at {result}") from e
+
+        # Check the type of the result
+        if check_type and (
+            (type_ is not Any and not isinstance(result, type_))
+            or (optional is not None and not isinstance(result, optional))
+        ):
+            raise TypeError(f"Expected type {type_}, got {type(result)}")
+
         return result
 
     def __repr__(self):

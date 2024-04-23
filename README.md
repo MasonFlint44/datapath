@@ -1,4 +1,4 @@
-# Miniforge Devcontainer Template
+# datapath
 
 This template is designed to streamline the setup of a Python development environment using Miniforge on Debian Bookworm. It's equipped with a collection of tools and extensions specifically chosen to enhance the Python development workflow, from code writing to testing and deployment.
 

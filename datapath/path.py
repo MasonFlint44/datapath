@@ -1,30 +1,51 @@
+from typing import Any, TypeVar, overload
+
+T = TypeVar("T")
+
+unassigned = object()
+
+
 class Path:
-    def __init__(self, path=None):
+    def __init__(self, path: list[str | int] | None = None) -> None:
         if path is None:
             path = []
         self.path = path
 
-    def __getattr__(self, name):
-        # Every time an attribute is accessed, extend the path with that attribute name
+    def __getattr__(self, name) -> "Path":
         return Path(self.path + [name])
 
-    def __getitem__(self, index):
-        # Allow indexing to also form part of the path
+    def __getitem__(self, index) -> "Path":
         return Path(self.path + [index])
 
-    def __call__(self, data):
+    @overload
+    def __call__(self, data) -> Any: ...
+
+    @overload
+    def __call__(self, data, *, type_: type[T]) -> T: ...
+
+    @overload
+    def __call__(self, data, *, optional: type[T]) -> T | None: ...
+
+    @overload
+    def __call__(self, data, *, default: T) -> T: ...
+
+    @overload
+    def __call__(self, data, *, default, type_: type[T]) -> T: ...
+
+    @overload
+    def __call__(self, data, *, default, optional: type[T]) -> T | None: ...
+
+    def __call__(self, data, *, default=unassigned, type_=Any, optional=None):
         # Navigate through the data according to the path
         result = data
         for step in self.path:
-            if isinstance(result, dict) and step in result:
+            try:
                 result = result[step]
-            elif isinstance(result, list) and isinstance(step, int) and 0 <= step < len(result):
-                result = result[step]
-            else:
-                # If the path is invalid or inaccessible, return None or raise an error
-                raise KeyError(f"Invalid path or index '{step}' at {result}")
+            except (KeyError, IndexError, TypeError) as e:
+                if default is not unassigned:
+                    return default
+                raise KeyError(f"Invalid path or index '{step}' at {result}") from e
         return result
 
     def __repr__(self):
-        # Helpful for debugging: show the path
         return f"Path({self.path})"

@@ -4,14 +4,6 @@
 
 Easily navigate nested data structures for building readable data pipelines.
 
-`datapath` offers an intuitive way to access and manipulate nested data structures in Python, making it easier to build clean and readable data pipelines. This package is particularly useful when dealing with complex data types such as nested dictionaries and lists. It leverages a class named `Path` to simplify the process of data traversal.
-
-## Features
-
-- **Easy navigation of nested data**: Use simple attribute and item access to traverse nested dictionaries and lists.
-- **Flexible data retrieval**: Retrieve data with optional type checking and default values if the path does not exist or leads to an error.
-- **Enhanced readability**: Create more readable code by abstracting complex data access into straightforward, path-based retrievals.
-
 ## Use case
 
 Do you ever find yourself writing ugly code to access nested values? Fret no longer!
@@ -52,6 +44,12 @@ alice_email = Path.data.users.Alice.profile.email(data, default="Email not provi
 bob_age= Path.data.users.Bob.profile.age(data, default="Age not provided")
 bob_email = Path.data.users.Bob.profile.email(data, default="Email not provided")
 ```
+
+## Features
+
+- **Easy navigation of nested data**: Use simple attribute and item access to traverse nested dictionaries and lists.
+- **Flexible data retrieval**: Retrieve data with optional type checking and default values if the path does not exist or leads to an error.
+- **Enhanced readability**: Create more readable code by abstracting complex data access into straightforward, path-based retrievals.
 
 ## Installation
 

@@ -1,59 +1,100 @@
 # datapath
 
-This template is designed to streamline the setup of a Python development environment using Miniforge on Debian Bookworm. It's equipped with a collection of tools and extensions specifically chosen to enhance the Python development workflow, from code writing to testing and deployment.
+The `datapath` package offers an intuitive way to access and manipulate nested data structures in Python, making it easier to build clean and readable data pipelines. This package is particularly useful when dealing with complex data types such as nested dictionaries, lists, or combinations thereof. It leverages a class named `Path` to simplify the process of data traversal.
 
-## Features Overview
+## Features
 
-| Feature                 | Description                                                                                           |
-|-------------------------|-------------------------------------------------------------------------------------------------------|
-| **Operating System**    | Debian Bookworm, providing a stable foundation for development.                   |
-| **Package Management**  | Miniforge, providing Conda and Mamba for efficient package and environment management.       |
-| **Programming Language**| Python, ready for development right out of the box.                          |
-| **Version Control**     | Git and Git LFS integrated for robust version control, including large file handling.          |
-| **Containerization**    | Supports Docker-in-Docker and Docker-outside-of-Docker.              |
-| **GitHub CLI**          | Facilitates interaction with GitHub repositories and services directly from the command line.         |
-| **VSCode Extensions**   | A curated list of VSCode extensions installed, including essentials for Python development.           |
-| **Testing Framework**   | Pytest configured to run tests from the `tests` directory, utilizing VSCode's test runner for ease of testing.      |
-| **Environment Setup**   | Development and application dependencies are managed in separate files but merged in the development environment automatically by the `build-environment` task.    |
+- **Easy navigation of nested data**: Use simple attribute and item access to traverse nested dictionaries, lists, and other indexable data structures.
+- **Flexible data retrieval**: Retrieve data with optional type checking and default values if the path does not exist or leads to an error.
+- **Enhanced readability**: Create more readable code by abstracting complex data access into straightforward, path-based retrievals.
 
-## Getting Started
+## Installation
 
-1. **Clone and Open**: Clone this repository and open it in VSCode. The project will prompt to reopen in a devcontainer.
-1. **Dev Environment Initialization**: The `build-environment` task runs automatically, preparing your development environment by integrating both development and application dependencies.
-1. **Rename the Project Directory**: Rename the `/project` directory to match the name of your new project to get started.
+`datapath` is available on PyPI, so you can install it using using pip:
 
-## Managing Dependencies
+```bash
+pip install datapath
+```
 
-- **Development Dependencies**: Defined in `environment.dev.yml`.
-- **Application Dependencies**: Defined in `environment.yml`. A frozen set of these dependencies is created and stored in `environment.lock.yml` for reproducible deployments.
-- **Automatic Merging**: The `build-environment` task merges your development and application dependencies when setting up your development environment. For managing dependencies, rely on this task rather than manually using Conda commands.
+## Basic Usage
 
-## Running Tests
+The `Path` class is the core of the `datapath` package. Here's how you can use it:
 
-Tests are run using VSCode's integrated test runner:
+### Creating a Path
 
-1. Navigate to the testing sidebar in VSCode.
-1. You'll see your tests listed there. Test can be run directly from the UI.
+```python
+from datapath import Path
 
-## Running the Application
+# Create a Path simply by chaining attributes or items
+path = Path.data.users[0].name
+```
 
-VSCode's `launch.json` is configured to debug the currently open Python file, allowing you to run and debug any part of your project easily.
+### Accessing Data
 
-> Note: You may need to tweak `launch.json` for specific project requirements, such as adding arguments or setting environment variables.
+Once you've created a path, you can use it to access data in nested structures:
 
-### Quick Start
+```python
+# Given a nested dictionary
+data = {
+    "data": {
+        "users": [
+            {"name": "Alice", "age": 30},
+            {"name": "Bob", "age": 25}
+        ]
+    }
+}
 
-- Open `project/main.py` or any Python file you intend to run.
-- Use `F5` or the green play button in the "Run and Debug" sidebar to start debugging.
+# To retrieve data using the path, simply call the path with the data as an argument.
+user_name = Path.data.users[0].name(data)
+# Prints 'Alice'
+```
 
-## Deployment
+## Advanced Usage
 
-Deploy your application using the dependencies detailed in `environment.lock.yml` to guarantee that your deployment mirrors the tested state of your application.
+### Type Checking and Default Values
 
-## Contributing
+The `Path` class allows for more complex operations like type checking and specifying default values if a path does not exist:
 
-We welcome contributions to improve the `miniforge-devcontainer-template`. Please follow the standard fork and pull request workflow. Make sure to add tests for new features and update the documentation as necessary.
+#### Using Default Values
 
-## License
+If a part of the path doesn't exist, you can specify a default value to return instead of raising an error:
 
-This project is licensed under the [MIT License](LICENSE.md).
+```python
+# Returns 'Unknown' if the specified index is out of range
+name = Path.data.users[2].name(data, default="Unknown")
+print(name)  # Outputs 'Unknown'
+```
+
+#### Type Checking
+
+You can enforce the type of the returned value:
+
+```python
+# Specify the expected type, returns the value if it matches, raises an error otherwise
+age = Path.data.users[0].age(data, type_=int)
+print(age) # Outputs 30
+```
+
+### Optional Type Specification
+
+You can specify that a return type is optional, which means it will return `None` if the path is not found or the type does not match, rather than raising an error:
+
+```python
+# Optional type checking, returns None if not found or type mismatch
+profile_pic = Path.data.users[0].profile_picture(data, optional=str)
+print(profile_pic)  # Outputs None since 'profile_picture' does not exist
+```
+
+## Understanding the Overloads
+
+The `__call__` method of the `Path` class supports several overloads to provide flexibility in how data is accessed:
+
+- **data**: The nested structure to be accessed.
+- **default**: If provided, this value is returned when the path leads to an error or does not exist.
+- **type_**: Enforces that the returned value matches this type, raising an error if it does not. Also determines the return type of the `__call__` method.
+- **optional**: Like `type_`, but returns `None` instead of raising an error when the type does not match or the path does not exist. Also used to determine the return type of the `__call__` method. 
+- **check_type**: If `True`, the type of the returned value is checked against `type_` or `optional` (default is `True`). If the type does not match, a TypeError is raised. When `False`, no type checking is performed (faster but less safe).
+
+## Conclusion
+
+The `datapath` package simplifies the way you interact with complex data structures. By abstracting the complexity of data traversal into simple path operations, it enables cleaner and more maintainable code in data-heavy applications.

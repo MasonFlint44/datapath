@@ -1,10 +1,14 @@
 # datapath
 
-The `datapath` package offers an intuitive way to access and manipulate nested data structures in Python, making it easier to build clean and readable data pipelines. This package is particularly useful when dealing with complex data types such as nested dictionaries, lists, or combinations thereof. It leverages a class named `Path` to simplify the process of data traversal.
+![PyPI](https://img.shields.io/pypi/v/datapath?style=for-the-badge) ![PyPI - License](https://img.shields.io/pypi/l/datapath?style=for-the-badge)
+
+The simple solution for sharing async data streams in Python.
+
+`datapath` offers an intuitive way to access and manipulate nested data structures in Python, making it easier to build clean and readable data pipelines. This package is particularly useful when dealing with complex data types such as nested dictionaries and lists. It leverages a class named `Path` to simplify the process of data traversal.
 
 ## Features
 
-- **Easy navigation of nested data**: Use simple attribute and item access to traverse nested dictionaries, lists, and other indexable data structures.
+- **Easy navigation of nested data**: Use simple attribute and item access to traverse nested dictionaries and lists.
 - **Flexible data retrieval**: Retrieve data with optional type checking and default values if the path does not exist or leads to an error.
 - **Enhanced readability**: Create more readable code by abstracting complex data access into straightforward, path-based retrievals.
 
@@ -46,55 +50,49 @@ data = {
 
 # To retrieve data using the path, simply call the path with the data as an argument.
 user_name = Path.data.users[0].name(data)
-# Prints 'Alice'
+print(user_name)    # Prints 'Alice'
 ```
 
 ## Advanced Usage
 
-### Type Checking and Default Values
-
-The `Path` class allows for more complex operations like type checking and specifying default values if a path does not exist:
-
-#### Using Default Values
+### Using Default Values
 
 If a part of the path doesn't exist, you can specify a default value to return instead of raising an error:
 
 ```python
 # Returns 'Unknown' if the specified index is out of range
 name = Path.data.users[2].name(data, default="Unknown")
-print(name)  # Outputs 'Unknown'
+print(name)  # Prints 'Unknown'
 ```
 
-#### Type Checking
+### Type Checking
 
 You can enforce the type of the returned value:
 
 ```python
-# Specify the expected type, returns the value if it matches, raises an error otherwise
+# Specify the expected type, returns the value if it matches, raises a TypeError otherwise
 age = Path.data.users[0].age(data, type_=int)
-print(age) # Outputs 30
+print(age) # Prints 30
 ```
 
-### Optional Type Specification
+> Note: Type enforcement can be disabled by setting `check_type` to False. `type_` and `optional` can still be used to define type hints for your data when `check_type` is False.
+
+#### Optional Type Specification
 
 You can specify that a return type is optional, which means it will return `None` if the path is not found or the type does not match, rather than raising an error:
 
 ```python
 # Optional type checking, returns None if not found or type mismatch
-profile_pic = Path.data.users[0].profile_picture(data, optional=str)
-print(profile_pic)  # Outputs None since 'profile_picture' does not exist
+birthday = Path.data.users[0].birthday(data, optional=str)
+print(birthday)  # Prints None since 'birthday' does not exist
 ```
 
-## Understanding the Overloads
+## Understanding the Arguments
 
-The `__call__` method of the `Path` class supports several overloads to provide flexibility in how data is accessed:
+The `__call__` method of the `Path` class supports several arguments that adjust the behavior to be used when accessing values:
 
 - **data**: The nested structure to be accessed.
 - **default**: If provided, this value is returned when the path leads to an error or does not exist.
-- **type_**: Enforces that the returned value matches this type, raising an error if it does not. Also determines the return type of the `__call__` method.
-- **optional**: Like `type_`, but returns `None` instead of raising an error when the type does not match or the path does not exist. Also used to determine the return type of the `__call__` method.
+- **type_**: Enforces that the returned value matches this type, raising a TypeError if it does not.
+- **optional**: Like `type_`, but returns `None` instead of raising a KeyError when the path does not exist. 
 - **check_type**: If `True`, the type of the returned value is checked against `type_` or `optional` (default is `True`). If the type does not match, a TypeError is raised. When `False`, no type checking is performed (faster but less safe).
-
-## Conclusion
-
-The `datapath` package simplifies the way you interact with complex data structures. By abstracting the complexity of data traversal into simple path operations, it enables cleaner and more maintainable code in data-heavy applications.

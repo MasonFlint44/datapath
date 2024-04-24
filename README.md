@@ -37,10 +37,10 @@ bob_email = data.get("users", {}).get("Bob", {}).get("profile", {}).get("email",
 ```python
 from datapath import Path
 
-alice_age = Path.data.users.Alice.profile.age(data, default="Unknown")
-alice_email = Path.data.users.Alice.profile.email(data, default="Unknown")
-bob_age= Path.data.users.Bob.profile.age(data, default="Unknown")
-bob_email = Path.data.users.Bob.profile.email(data, default="Unknown")
+alice_age = Path.users.Alice.profile.age(data, default="Unknown")
+alice_email = Path.users.Alice.profile.email(data, default="Unknown")
+bob_age= Path.users.Bob.profile.age(data, default="Unknown")
+bob_email = Path.users.Bob.profile.email(data, default="Unknown")
 ```
 
 ## Features

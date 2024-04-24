@@ -2,7 +2,7 @@
 
 ![PyPI](https://img.shields.io/pypi/v/datapath?style=for-the-badge) ![PyPI - License](https://img.shields.io/pypi/l/datapath?style=for-the-badge)
 
-The simple solution for sharing async data streams in Python.
+Easily navigate nested data structures for building readable data pipelines.
 
 `datapath` offers an intuitive way to access and manipulate nested data structures in Python, making it easier to build clean and readable data pipelines. This package is particularly useful when dealing with complex data types such as nested dictionaries and lists. It leverages a class named `Path` to simplify the process of data traversal.
 

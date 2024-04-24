@@ -92,7 +92,7 @@ The `__call__` method of the `Path` class supports several overloads to provide 
 - **data**: The nested structure to be accessed.
 - **default**: If provided, this value is returned when the path leads to an error or does not exist.
 - **type_**: Enforces that the returned value matches this type, raising an error if it does not. Also determines the return type of the `__call__` method.
-- **optional**: Like `type_`, but returns `None` instead of raising an error when the type does not match or the path does not exist. Also used to determine the return type of the `__call__` method. 
+- **optional**: Like `type_`, but returns `None` instead of raising an error when the type does not match or the path does not exist. Also used to determine the return type of the `__call__` method.
 - **check_type**: If `True`, the type of the returned value is checked against `type_` or `optional` (default is `True`). If the type does not match, a TypeError is raised. When `False`, no type checking is performed (faster but less safe).
 
 ## Conclusion

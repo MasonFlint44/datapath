@@ -12,6 +12,47 @@ Easily navigate nested data structures for building readable data pipelines.
 - **Flexible data retrieval**: Retrieve data with optional type checking and default values if the path does not exist or leads to an error.
 - **Enhanced readability**: Create more readable code by abstracting complex data access into straightforward, path-based retrievals.
 
+## Use case
+
+Do you ever find yourself writing ugly code to access nested values? Fret no longer!
+
+#### Go from this:
+```python
+data = {
+    "data": {
+        "users": {
+            "Alice": {
+                "profile": {
+                    "age": 30,
+                    "email": "alice@example.com"
+                }
+            },
+            "Bob": {
+                "profile": {
+                    "age": 25,
+                    "email": "bob@example.com"
+                }
+            }
+        }
+    }
+}
+
+alice_age = data.get("data", {}).get("users", {}).get("Alice", {}).get("profile", {}).get("age", "Age not provided")
+alice_email = data.get("data", {}).get("users", {}).get("Alice", {}).get("profile", {}).get("email", "Email not provided")
+bob_age = data.get("data", {}).get("users", {}).get("Bob", {}).get("profile", {}).get("age", "Age not provided")
+bob_email = data.get("data", {}).get("users", {}).get("Bob", {}).get("profile", {}).get("email", "Email not provided")
+```
+
+#### To this:
+```python
+from datapath import Path
+
+alice_age = Path.data.users.Alice.profile.age(data, default="Age not provided")
+alice_email = Path.data.users.Alice.profile.email(data, default="Email not provided")
+bob_age= Path.data.users.Bob.profile.age(data, default="Age not provided")
+bob_email = Path.data.users.Bob.profile.email(data, default="Email not provided")
+```
+
 ## Installation
 
 `datapath` is available on PyPI, so you can install it using using pip:

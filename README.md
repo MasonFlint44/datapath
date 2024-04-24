@@ -29,6 +29,7 @@ data = {
 
 alice_age = data["users"]["Alice"]["profile"]["age"]
 alice_email = data["users"]["Alice"]["profile"]["email"]
+
 bob_age = data.get("users", {}).get("Bob", {}).get("profile", {}).get("age", "Unknown")
 bob_email = data.get("users", {}).get("Bob", {}).get("profile", {}).get("email", "Unknown")
 ```
@@ -37,8 +38,10 @@ bob_email = data.get("users", {}).get("Bob", {}).get("profile", {}).get("email",
 ```python
 from datapath import Path
 
+
 alice_age = Path.users.Alice.profile.age(data)
 alice_email = Path.users.Alice.profile.email(data)
+
 bob_age= Path.users.Bob.profile.age(data, default="Unknown")
 bob_email = Path.users.Bob.profile.email(data, default="Unknown")
 ```

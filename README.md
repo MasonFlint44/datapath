@@ -11,28 +11,26 @@ Do you ever find yourself writing ugly code to access nested values? Fret no lon
 #### Go from this:
 ```python
 data = {
-    "data": {
-        "users": {
-            "Alice": {
-                "profile": {
-                    "age": 30,
-                    "email": "alice@example.com"
-                }
-            },
-            "Bob": {
-                "profile": {
-                    "age": 25,
-                    "email": "bob@example.com"
-                }
+    "users": {
+        "Alice": {
+            "profile": {
+                "age": 30,
+                "email": "alice@example.com"
+            }
+        },
+        "Bob": {
+            "profile": {
+                "age": 25,
+                "email": "bob@example.com"
             }
         }
     }
 }
 
-alice_age = data.get("data", {}).get("users", {}).get("Alice", {}).get("profile", {}).get("age", "Age not provided")
-alice_email = data.get("data", {}).get("users", {}).get("Alice", {}).get("profile", {}).get("email", "Email not provided")
-bob_age = data.get("data", {}).get("users", {}).get("Bob", {}).get("profile", {}).get("age", "Age not provided")
-bob_email = data.get("data", {}).get("users", {}).get("Bob", {}).get("profile", {}).get("email", "Email not provided")
+alice_age = data.get("users", {}).get("Alice", {}).get("profile", {}).get("age", "Age not provided")
+alice_email = data.get("users", {}).get("Alice", {}).get("profile", {}).get("email", "Email not provided")
+bob_age = data.get("users", {}).get("Bob", {}).get("profile", {}).get("age", "Age not provided")
+bob_email = data.get("users", {}).get("Bob", {}).get("profile", {}).get("email", "Email not provided")
 ```
 
 #### To this:

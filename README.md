@@ -27,20 +27,20 @@ data = {
     }
 }
 
-alice_age = data.get("users", {}).get("Alice", {}).get("profile", {}).get("age", "Age not provided")
-alice_email = data.get("users", {}).get("Alice", {}).get("profile", {}).get("email", "Email not provided")
-bob_age = data.get("users", {}).get("Bob", {}).get("profile", {}).get("age", "Age not provided")
-bob_email = data.get("users", {}).get("Bob", {}).get("profile", {}).get("email", "Email not provided")
+alice_age = data.get("users", {}).get("Alice", {}).get("profile", {}).get("age", "Unknown")
+alice_email = data.get("users", {}).get("Alice", {}).get("profile", {}).get("email", "Unknown")
+bob_age = data.get("users", {}).get("Bob", {}).get("profile", {}).get("age", "Unknown")
+bob_email = data.get("users", {}).get("Bob", {}).get("profile", {}).get("email", "Unknown")
 ```
 
 #### To this:
 ```python
 from datapath import Path
 
-alice_age = Path.data.users.Alice.profile.age(data, default="Age not provided")
-alice_email = Path.data.users.Alice.profile.email(data, default="Email not provided")
-bob_age= Path.data.users.Bob.profile.age(data, default="Age not provided")
-bob_email = Path.data.users.Bob.profile.email(data, default="Email not provided")
+alice_age = Path.data.users.Alice.profile.age(data, default="Unknown")
+alice_email = Path.data.users.Alice.profile.email(data, default="Unknown")
+bob_age= Path.data.users.Bob.profile.age(data, default="Unknown")
+bob_email = Path.data.users.Bob.profile.email(data, default="Unknown")
 ```
 
 ## Features

@@ -14,12 +14,12 @@ def test_path_call(data: dict):
 
 def test_path_call_raises_key_error(data: dict):
     with pytest.raises(KeyError):
-        Path.foo.bar[2].baz(data)
+        Path.foo.bar[3].baz(data)
 
 
 def test_path_call_with_default_value(data: dict):
-    assert Path.foo.bar[2].baz(data, default=None) is None
-    assert Path.foo.bar[2].baz(data, default=42) == 42
+    assert Path.foo.bar[3].baz(data, default=None) is None
+    assert Path.foo.bar[3].baz(data, default=42) == 42
 
 
 def test_path_call_returns_any(data: dict):
@@ -132,7 +132,7 @@ def test_path_call_with_default_value_returns_specific_type(data: dict):
 
         data = {data}
 
-        path = Path.foo.bar[2].baz(data, default="asdf", type_=int)
+        path = Path.foo.bar[3].baz(data, default="asdf", type_=int)
 
         reveal_type(path)
         """
@@ -166,7 +166,7 @@ def test_path_call_returns_optional_type(data: dict):
 
         data = {data}
 
-        path = Path.foo.bar[2].baz(data, optional=int)
+        path = Path.foo.bar[3].baz(data, optional=int)
 
         reveal_type(path)
         """
@@ -193,7 +193,7 @@ def test_path_call_returns_optional_type(data: dict):
 
 
 def test_path_call_returns_default_none_with_optional(data: dict):
-    assert Path.foo.bar[2].baz(data, optional=int) is None
+    assert Path.foo.bar[3].baz(data, optional=int) is None
 
 
 def test_path_call_checks_type(data: dict):
@@ -209,3 +209,12 @@ def test_path_call_checks_type_with_optional(data: dict):
 def test_path_call_does_not_check_type(data: dict):
     assert Path.foo.bar[0].baz(data, type_=str, check_type=False) == 1  # type: ignore
     assert Path.foo.bar[0].baz(data, optional=str, check_type=False) == 1  # type: ignore
+
+
+def test_path_call_returns_none_with_optional_when_value_is_none(data: dict):
+    assert Path.foo.bar[2].baz(data, optional=int) is None
+
+
+def test_path_call_raises_error_with_type__when_value_is_none(data: dict):
+    with pytest.raises(TypeError):
+        Path.foo.bar[2].baz(data, type_=int)

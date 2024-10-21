@@ -52,11 +52,15 @@ class Path:
                 raise KeyError(f"Invalid path or index '{step}' at {result}") from e
 
         # Check the type of the result
-        if check_type and (
-            (type_ is not Any and not isinstance(result, type_))
-            or (optional is not None and not isinstance(result, optional))
-        ):
-            raise TypeError(f"Expected type {type_}, got {type(result)}")
+        if check_type:
+            if type_ is not Any and not isinstance(result, type_):
+                raise TypeError(f"Expected type {type_}, got {type(result)}")
+            elif (
+                optional is not None
+                and result is not None
+                and not isinstance(result, optional)
+            ):
+                raise TypeError(f"Expected type {optional}, got {type(result)}")
 
         return result
 

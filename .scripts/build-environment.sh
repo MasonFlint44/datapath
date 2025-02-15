@@ -17,7 +17,7 @@ if mamba env list | grep -wq $DEV_ENV_NAME; then
     mamba env update -f $MERGED_ENV_PATH -n $DEV_ENV_NAME
 else
     # Create the dev environment from the merged file if it does not exist
-    mamba env create -f $MERGED_ENV_PATH -n $DEV_ENV_NAME
+    mamba env create -f $MERGED_ENV_PATH -n $DEV_ENV_NAME -y
 fi
 
 # Check if the frozen environment exists
@@ -26,7 +26,7 @@ if mamba env list | grep -wq $FROZEN_ENV_NAME; then
     mamba env update -f $APP_ENV_FILE -n $FROZEN_ENV_NAME
 else
     # Create the frozen environment from the merged file if it does not exist
-    mamba env create -f $APP_ENV_FILE -n $FROZEN_ENV_NAME
+    mamba env create -f $APP_ENV_FILE -n $FROZEN_ENV_NAME -y
 fi
 
 # Remove unused packages

@@ -1,7 +1,7 @@
 {
 	"image": "mcr.microsoft.com/devcontainers/base:1-bookworm",
 	"features": {
-		"ghcr.io/rocker-org/devcontainer-features/miniforge:1": {},
+		"ghcr.io/rocker-org/devcontainer-features/miniforge:2": {},
 		"ghcr.io/devcontainers/features/git:1": {},
 		"ghcr.io/devcontainers/features/git-lfs:1": {},
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},

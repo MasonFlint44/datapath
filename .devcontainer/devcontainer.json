@@ -9,6 +9,9 @@
 		"ghcr.io/devcontainers/features/github-cli:1": {},
 		"ghcr.io/devcontainers/features/python:1": {}
 	},
+	"mounts": [
+		"type=bind,source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,readonly"
+	],
 	"customizations": {
 		"vscode": {
 			"extensions": [

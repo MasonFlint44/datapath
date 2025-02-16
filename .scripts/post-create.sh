@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mamba init
+mamba shell init --shell bash
 
 mamba install conda-merge -y
 

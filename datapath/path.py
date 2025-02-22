@@ -33,7 +33,7 @@ class Path:
     def __call__(self, data, *, default, type_: type[T]) -> T: ...
 
     def __call__(
-        self, data, *, default=unassigned, type_=Any, optional=None, check_type=True
+        self, data, *, default=unassigned, type_=None, optional=None, check_type=True
     ):
         # Navigate through the data according to the path
         result = data
@@ -53,9 +53,9 @@ class Path:
 
         # Check the type of the result
         if check_type:
-            if type_ is not Any and not isinstance(result, type_):
+            if type_ is not None and not isinstance(result, type_):
                 raise TypeError(f"Expected type {type_}, got {type(result)}")
-            elif (
+            if (
                 optional is not None
                 and result is not None
                 and not isinstance(result, optional)
